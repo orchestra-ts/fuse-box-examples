@@ -20,7 +20,7 @@ const fuseConfig = {
       uglify: false,
       ensureES5: true,
       bakeApiIntoBundle: "myModuleB",
-      containedApi: false
+      containedApi: true
     })
   ]
 };
