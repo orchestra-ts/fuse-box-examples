@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>quantum_multi_bundle_example - module BA</title>
+</head>
+<body>
+  <script src="bundle/myModuleB.js"></script>
+  <script src="bundle/myModuleA.js"></script>
+  <script>
+    console.log("o-- myModuleB ----------------");
+    console.log(myModuleB);
+    myModuleB.funcB();
+    console.log("o-- myModuleA ----------------");
+    console.log(myModuleA);
+    myModuleA.funcB(); // exist!
+    myModuleA.funcA(); // fail
+  </script>
+</body>
+</html>
