@@ -1,18 +1,25 @@
-const { FuseBox, Sparky } = require("fuse-box");
+const { task, context } = require("fuse-box/sparky");
+const { FuseBox } = require("fuse-box");
 
-Sparky.task("default", ["server-test"], () => {});
+task("default", ["server-test"]);
 
-// Launch test server
-Sparky.task("server-test", () => {
-  const fuse = FuseBox.init({
-    homeDir: "src",
-    output: "test/$name.js"
-  });
+context(class {
+  getConfig() {
+    return FuseBox.init({
+      homeDir: "src",
+      output: "test/$name.js"
+    });
+  }
+});
+
+// Launch testing server
+task("server-test", async context => {
+  const fuse = context.getConfig();
 
   fuse.dev({
     root: "test",
   });
 
   // Run build
-  return fuse.run();
+  await fuse.run();
 });

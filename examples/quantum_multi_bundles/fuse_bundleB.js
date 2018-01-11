@@ -1,54 +1,65 @@
-const {FuseBox, Sparky, QuantumPlugin, WebIndexPlugin} = require("fuse-box");
+const { src, task, context } = require("fuse-box/sparky");
+const { FuseBox, QuantumPlugin } = require("fuse-box");
 
 /** -------------------------------------
  * CONFIGURATIONS
  */
 
 // Default fusebox configuration
-const fuseConfig = {
-  homeDir: "src/moduleB",
-  output: "bundle/$name.js",
-  globals: {default: "myModuleB"},
-  package: {
-    name: "moduleB",
-    entry: "index.ts"
-  },
-  plugins: [
-    // WebIndexPlugin(),
-    QuantumPlugin({
-      target: "browser",
-      uglify: false,
-      ensureES5: true,
-      bakeApiIntoBundle: "myModuleB",
-      containedApi: true
-    })
-  ]
-};
+context(class {
+  getConfig() {
+    return FuseBox.init({
+      homeDir: "src/moduleB",
+      output: "bundleB/$name.js",
+      globals: { myModuleB: "myModuleB" },
+      package: {
+        name: "myModuleB",
+        main: "index.js"
+      },
+      plugins: [
+        QuantumPlugin({
+          target: "browser",
+          uglify: {
+            compress: {
+              drop_console: false
+            }
+          },
+          treeshake: true,
+          ensureES5: true,
+          bakeApiIntoBundle: "myModuleB",
+          containedApi: true,
+          noConflictApi: true
+        })
+      ]
+    });
+  }
+});
 
 /** -------------------------------------
  * TASKS
  */
 
 // Default
-Sparky.task("default", ["clean", "bundle-moduleB", "copy-to-test"], () => {});
+task("default", ["clean", "bundle-moduleB", "copy-to-test"]);
 
 // Clean
-Sparky.task("clean", () => {
-  return Sparky.src("bundleB/").clean("bundleB/");
+task("clean", async () => {
+  await src("./bundleB").clean("bundleB/").exec();
 });
 
-Sparky.task("copy-to-test", () => {
-  return Sparky.src("bundle/myModuleB.js").dest("test/");
+// Copy for testing
+task("copy-to-test", async () => {
+  await src("./myModuleB.js", { base: "./bundleB" }).dest("test/bundle/").exec();
 });
 
 // Bundle moduleB
-Sparky.task("bundle-moduleB", () => {
-  const fuse = FuseBox.init(fuseConfig);
+task("bundle-moduleB", async context => {
+  const fuse = context.getConfig();
 
   // Create bundle
   fuse.bundle("myModuleB")
-    .instructions(`> index.ts`);
+    .instructions("> index.ts");
 
   // Run build
-  return fuse.run();
+  await fuse.run();
 });
