@@ -34,25 +34,25 @@ a second initialize the **bundleB** then the **bundleA**.
 moduleAB.html
 ```html
   <script type="text/javascript">
-    console.log("o-- myModuleA ----------------");
-    console.log(myModuleA);
-    myModuleA.funcA();
+    console.log("o-- myModuleA.js ----------------");
+    console.log(modA);
+    modA.funcA();
     
-    console.log("o-- myModuleB ----------------");
-    console.log(myModuleB);
-    myModuleB.funcB();
+    console.log("o-- myModuleB.js ----------------");
+    console.log(modB);
+    modB.funcB();
   </script>
 ```
 moduleBA.html
 ```html
   <script type="text/javascript">
-    console.log("o-- myModuleB ----------------");
-    console.log(myModuleB);
-    myModuleB.funcB();
+    console.log("o-- myModuleB.js ----------------");
+    console.log(modB);
+    modB.funcB();
     
-    console.log("o-- myModuleA ----------------");
-    console.log(myModuleA);
-    myModuleA.funcA();
+    console.log("o-- myModuleA.js ----------------");
+    console.log(modA);
+    modA.funcA();
   </script>
 ```
 
@@ -61,21 +61,17 @@ moduleBA.html
 fuse_bundleA.js
 ```javascript
 {
-  globals : { "myModuleA": "myModuleA" },
-  package: {
-    name: "myModuleA",
-    entry: "index.ts"
-  }
+  ...
+  globals : { default: "modA" },
+  ...
 }
 ```
 fuse_bundleB.js
 ```javascript
 {
-  globals : { "myModuleB": "myModuleB" },
-  package: {
-    name: "myModuleB",
-    entry: "index.ts"
-  }
+  ...
+  globals : { default: "modB" },
+  ...
 }
 ```
 

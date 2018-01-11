@@ -11,11 +11,7 @@ context(class {
     return FuseBox.init({
       homeDir: "src/moduleA",
       output: "bundleA/$name.js",
-      globals: { myModuleA: "myModuleA" },
-      package: {
-        name: "myModuleA",
-        main: "index.js"
-      },
+      globals: { default: "modA" },
       plugins: [
         QuantumPlugin({
           uglify: {
