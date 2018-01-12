@@ -15,7 +15,7 @@ and the **module B** export a a method `funcB()`.
 ## Build
 In the terminal
 - `node fuse_bundleA.js` for build the **module A**
-- `node fuse_bundleA.js` for build the **module B**
+- `node fuse_bundleB.js` for build the **module B**
 - `node fuse.js` for start the dev server
 
 Open your browser
